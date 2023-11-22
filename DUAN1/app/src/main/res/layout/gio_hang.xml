@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:minHeight="500dp"
+        android:orientation="horizontal">
+
+        <ListView
+            android:id="@+id/list_giohang"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/gio_hang_grdn_1"
+            >
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_gravity="start"
+                android:drawableStart="@drawable/box"
+                android:gravity="start|center"
+                android:layout_weight="1"
+                android:text="Voucher" />
+
+            <TextView
+                android:id="@+id/etgiamgia"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textColor="#4BB9A0"
+                android:fontFamily="serif"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:text="Nhập mã" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@drawable/thanh_toan_border_top"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            >
+
+
+
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:fontFamily="serif"
+                android:text="Tổng thanh toán" />
+
+            <TextView
+                android:id="@+id/tvtongtien"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:textColor="#4BB9A0"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="serif"
+                android:textSize="20dp"
+                android:text="đ0" />
+
+            <Button
+                android:id="@+id/btnmua"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:backgroundTint="#4BB9A0"
+                android:text="Mua hàng"
+                android:layout_marginLeft="50dp"
+                app:cornerRadius="0dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
