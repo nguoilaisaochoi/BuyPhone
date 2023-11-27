@@ -68,9 +68,7 @@ public class HoaDonFragment extends Fragment {
         String userRole = sharedPreferences.getString(PREF_ROLE_KEY, "");
         nav_name = getActivity().getSharedPreferences("name_Nav", MODE_PRIVATE);
         if (userRole.equals("admin")) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                list = (ArrayList<GioHang>) dao.getAll();
-            }
+            list = (ArrayList<GioHang>) dao.getAll();
             admin_adapter = new HoaDon_ADMIN_Adapter(getActivity(), this, list);
             lvsp.setAdapter(admin_adapter);
         } else {

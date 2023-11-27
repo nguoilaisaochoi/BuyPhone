@@ -46,12 +46,30 @@ public class Dangki extends AppCompatActivity {
                     item.setMatKhau(mk.getText().toString());
                     item.setHoTen(hoten.getText().toString());
                     if (dao.insert(item) > 0) {
-                        Toast.makeText(getApplicationContext(), "Tạo thành công", Toast.LENGTH_SHORT).show();
+                        Context context = getApplicationContext();
+                        LayoutInflater inflater = getLayoutInflater();
+                        View customToastView = inflater.inflate(R.layout.customtoast, null);
+                        TextView textView = customToastView.findViewById(R.id.custom_toast_message);
+                        textView.setText("Đăng kí thành công");
+
+                        Toast customToast = new Toast(context);
+                        customToast.setDuration(Toast.LENGTH_SHORT);
+                        customToast.setView(customToastView);
+                        customToast.show();
                         Intent intent = new Intent(getApplicationContext(), Login.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(getApplicationContext(), "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
+                        Context context = getApplicationContext();
+                        LayoutInflater inflater = getLayoutInflater();
+                        View customToastView = inflater.inflate(R.layout.customtoast, null);
+                        TextView textView = customToastView.findViewById(R.id.custom_toast_message);
+                        textView.setText("Tài khoản đã tồn tại");
+
+                        Toast customToast = new Toast(context);
+                        customToast.setDuration(Toast.LENGTH_SHORT);
+                        customToast.setView(customToastView);
+                        customToast.show();
                     }
                 }
             }

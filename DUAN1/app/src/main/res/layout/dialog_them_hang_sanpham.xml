@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="mã"
+        android:text=""
         android:textColor="@color/black"
         android:fontFamily="@font/bree_serif"
         android:textSize="22dp" />
@@ -68,7 +68,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_gravity="center_vertical"
-            android:text="Choose Image" />
+            android:text="Chọn ảnh" />
 
     </LinearLayout>
 
@@ -80,12 +80,11 @@
         android:layout_marginTop="20dp">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
             android:layout_height="50dp"
             android:backgroundTint="#4BB9A0"
             app:cardCornerRadius="10dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
             android:layout_gravity="center">
 
             <Button
@@ -101,22 +100,22 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
             android:layout_height="50dp"
             android:backgroundTint="#4BB9A0"
             app:cardCornerRadius="10dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
+            android:layout_marginLeft="10sp"
             android:layout_gravity="center">
 
             <Button
                 android:id="@+id/btn_hthem"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00CD1212"
                 android:layout_gravity="center"
                 android:fontFamily="@font/bree_serif"
-                android:text="Ok"
+                android:text="Lưu"
                 android:textSize="20dp"
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>

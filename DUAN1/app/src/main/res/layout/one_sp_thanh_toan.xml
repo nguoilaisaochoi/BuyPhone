@@ -20,8 +20,8 @@
 
             <ImageView
                 android:id="@+id/gh_anh"
-                android:layout_width="wrap_content"
-                android:layout_height="120sp"
+                android:layout_width="90sp"
+                android:layout_height="110sp"
                 android:layout_marginEnd="5sp"
                 android:layout_weight="0"
                 android:src="@drawable/image5" />

@@ -21,7 +21,7 @@
             <ImageView
                 android:id="@+id/anh"
                 android:layout_width="90sp"
-                android:layout_height="match_parent"
+                android:layout_height="110sp"
                 android:layout_marginEnd="5sp"
                 android:scaleType="fitCenter"
                 tools:srcCompat="@drawable/image5" />
@@ -38,6 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="TextView"
+                    android:layout_marginBottom="5sp"
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     android:fontFamily="@font/bree_serif"
@@ -47,7 +48,7 @@
                     android:id="@+id/lntt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_marginBottom="10sp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -127,7 +128,7 @@
                     <Button
                         android:id="@+id/btnaddgh"
                         android:layout_width="wrap_content"
-                        android:layout_height="35sp"
+                        android:layout_height="40sp"
                         android:layout_gravity="center_vertical"
                         android:backgroundTint="#4BB9A0"
                         android:text="Thêm vào giỏ hàng"

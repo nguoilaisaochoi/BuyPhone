@@ -154,7 +154,7 @@ public class GioHangFragment extends Fragment {
             LayoutInflater inflater = getLayoutInflater();
             View customToastView = inflater.inflate(R.layout.customtoast, null);
             TextView textView = customToastView.findViewById(R.id.custom_toast_message);
-            textView.setText("Hãy điền địa chỉ và số điện thoại");
+            textView.setText("Hãy điền địa chỉ và số điện thoại tại thông tin tài khoản");
 
             Toast customToast = new Toast(context);
             customToast.setDuration(Toast.LENGTH_SHORT);
@@ -165,10 +165,14 @@ public class GioHangFragment extends Fragment {
         return check;
     }
     public void capnhatlv() {
+        int firstVisibleItem = lvsp.getFirstVisiblePosition();
+        View v = lvsp.getChildAt(0);
+        int top = (v == null) ? 0 : (v.getTop() - lvsp.getPaddingTop());
         list = (ArrayList<GioHang>) dao.getAll();
         adapter = new GioHangAdapter(getActivity(), this, list);
         lvsp.setAdapter(adapter);
         hienThiTongThanhToan();
+        lvsp.setSelectionFromTop(firstVisibleItem, top);
     }
 
     public void xoa(final String ID) {

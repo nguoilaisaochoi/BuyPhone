@@ -76,7 +76,7 @@
             <Spinner
                 android:id="@+id/sp_hang"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48sp"
                 android:background="@drawable/khung_search" />
 
 
@@ -184,38 +184,38 @@
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="100dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginRight="40dp"
                     android:backgroundTint="#4BB9A0"
+                    android:layout_weight="1"
+                    android:layout_marginRight="5sp"
                     app:cardCornerRadius="10dp">
 
                     <Button
                         android:id="@+id/btnhuy"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="#00CD1212"
                         android:fontFamily="@font/bree_serif"
                         android:text="Hủy"
-                        android:textSize="20dp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="100dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginLeft="5sp"
                     android:backgroundTint="#4BB9A0"
+                    android:layout_weight="1"
                     app:cardCornerRadius="10dp">
 
                     <Button
                         android:id="@+id/btnluu"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="#00CD1212"

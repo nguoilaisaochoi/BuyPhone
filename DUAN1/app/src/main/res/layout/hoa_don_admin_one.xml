@@ -92,12 +92,14 @@
                 <LinearLayout
                     android:id="@+id/xacnhan"
                     android:layout_width="match_parent"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="20dp">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="150sp"
+                        android:layout_weight="1"
                         android:layout_height="50sp"
                         android:backgroundTint="#e74c3c"
                         app:cardCornerRadius="10dp"
@@ -120,6 +122,7 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="150sp"
                         android:layout_height="50sp"
+                        android:layout_weight="1"
                         android:backgroundTint="#4BB9A0"
                         app:cardCornerRadius="10dp"
                         android:layout_marginLeft="20sp"

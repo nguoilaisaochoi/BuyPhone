@@ -152,9 +152,13 @@ public class SanPhamAdminFragment extends Fragment {
     }
 
     void capnhatlv() {
+        int firstVisibleItem = lvsp.getFirstVisiblePosition();
+        View v = lvsp.getChildAt(0);
+        int top = (v == null) ? 0 : (v.getTop() - lvsp.getPaddingTop());
         list = (ArrayList<SanPham>) dao.getAll();
         adapter = new SanPhamAdminAdapter(getActivity(), this, list);
         lvsp.setAdapter(adapter);
+        lvsp.setSelectionFromTop(firstVisibleItem, top);
     }
 
     private void openGallery() {
@@ -163,7 +167,6 @@ public class SanPhamAdminFragment extends Fragment {
 
         // Sử dụng ActivityResultLauncher để khởi động hoạt động thư viện
         galleryLauncher.launch(intent);
-        Glide.with(requireContext()).clear(anhsp);
     }
 
     protected void opendialog(final Context context, final int type) {
@@ -400,6 +403,7 @@ public class SanPhamAdminFragment extends Fragment {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(resolver, imageUri);
 
                 // Đặt hình ảnh vào ImageView
+                Glide.with(requireContext()).clear(anhsp);
                 anhsp.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();

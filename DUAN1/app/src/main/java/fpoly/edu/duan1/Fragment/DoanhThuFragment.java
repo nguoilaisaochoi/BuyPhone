@@ -74,7 +74,7 @@ public class DoanhThuFragment extends Fragment {
                 String tungay=ettungay.getText().toString();
                 String denngay=etdenngay.getText().toString();
                 HoaDonDAO hoaDonDAO =new HoaDonDAO(getActivity());
-                tvdoanhthu.setText(hoaDonDAO.getDoanhThu(tungay,denngay)+"VND");
+                tvdoanhthu.setText(chuyendvtien(hoaDonDAO.getDoanhThu(tungay,denngay)));
             }
         });
         return v;
@@ -99,5 +99,11 @@ public class DoanhThuFragment extends Fragment {
             etdenngay.setText(sdf.format(c.getTime()));
         }
     };
+    public String chuyendvtien(int amount) {
+        // Định dạng kiểu tiền tệ Việt Nam
+        java.text.DecimalFormat currencyFormat = new java.text.DecimalFormat("###,###,###,### đ");
 
+        // Chuyển đổi giá trị từ int sang chuỗi tiền tệ
+        return currencyFormat.format(amount);
+    }
 }
