@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@+id/list_giohang"
+        android:layout_width="match_parent"
+        android:layout_height="497dp"
+        android:layout_marginEnd="1dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@drawable/thanh_toan_border_top"
+        app:layout_constraintBottom_toTopOf="@+id/textView14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_giohang" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="141dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:text="Tổng thanh toán:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvtongtien"
+        app:layout_constraintEnd_toStartOf="@+id/btnmua"
+        app:layout_constraintHorizontal_bias="0.103"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+    <TextView
+        android:id="@+id/tvtongtien"
+        android:layout_width="146dp"
+        android:layout_height="28dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="100dp"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:text="999.999.999.999"
+        android:textColor="#4BB9A0"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvdiachi"
+        app:layout_constraintEnd_toStartOf="@+id/btnmua"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+    <Button
+        android:id="@+id/btnmua"
+        android:layout_width="155dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="#4BB9A0"
+        android:text="Mua hàng"
+        android:textSize="17sp"
+        app:cornerRadius="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvtongtien"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+
+    <TextView
+        android:id="@+id/tvdiachi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="Địa chỉ: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvtongtien" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>
