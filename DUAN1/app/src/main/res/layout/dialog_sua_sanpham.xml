@@ -61,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bree_serif"
                 android:hint="Iphone 13 Pro 256GB"
+                android:inputType="text"
                 android:textSize="20dp" />
 
             <TextView
@@ -93,7 +94,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bree_serif"
-                android:hint="15.500.00VNĐ"
+                android:hint="15.500.00"
+                android:inputType="number"
                 android:textSize="20dp" />
 
             <TextView
@@ -110,7 +112,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bree_serif"
-                android:hint="15.500.00VNĐ"
+                android:hint="6.1"
+                android:inputType="numberDecimal"
                 android:textSize="20dp" />
 
             <TextView
@@ -127,7 +130,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bree_serif"
-                android:hint="15.500.00VNĐ"
+                android:hint="2"
+                android:inputType="number"
                 android:textSize="20dp" />
 
             <TextView
@@ -144,7 +148,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bree_serif"
-                android:hint="15.500.00VNĐ"
+                android:hint="250"
+                android:inputType="number"
                 android:textSize="20dp" />
 
             <LinearLayout

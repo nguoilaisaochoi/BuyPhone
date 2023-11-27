@@ -75,7 +75,7 @@ public class GioHangAdapter extends ArrayAdapter<GioHang> {
                 Glide.with(context)
                         .load(sanPham.getAnh())
                         .dontAnimate()
-                        .override(290,290)
+                        .override(240,240)
                         .skipMemoryCache(false)
                         .error(R.drawable.noimg) // Add an error drawable
                         .diskCacheStrategy(DiskCacheStrategy.ALL) // Sử dụng cache đĩa

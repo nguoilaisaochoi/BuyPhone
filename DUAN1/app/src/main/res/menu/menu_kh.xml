@@ -7,13 +7,13 @@
          android:checkable="true"
          />
      <item android:id="@+id/sanphamadmin"
-         android:title="Sản phẩm"
+         android:title="Quản lí sản phẩm"
          android:icon="@drawable/box"
          android:checkable="true"
          />
      <item android:id="@+id/giohang"
          android:title="Giỏ hàng"
-         android:icon="@drawable/box"
+         android:icon="@drawable/baseline_shopping_cart_24"
          android:checkable="true"
          />
      <item android:id="@+id/qlhang"
@@ -27,8 +27,8 @@
             <item
                 android:id="@+id/hoadon"
                 android:checkable="true"
-                android:icon="@drawable/box"
-                android:title="Hoá đơn" />
+                android:icon="@drawable/donhang"
+                android:title="Đơn hàng" />
             <item
                 android:id="@+id/dt"
                 android:checkable="true"
@@ -41,12 +41,19 @@
             <item
                 android:id="@+id/dmk"
                 android:checkable="true"
-                android:icon="@drawable/box"
+                android:icon="@drawable/baseline_password_24"
                 android:title="Đổi mật khẩu" />
+            <item
+                android:id="@+id/thongtin"
+                android:checkable="true"
+                android:title="Thông tin tài khoản"
+                android:icon="@drawable/baseline_account_circle_24"/>
             <item
                 android:id="@+id/dx"
                 android:checkable="true"
+                android:icon="@drawable/baseline_logout_24"
                 android:title="Đăng xuất" />
+
         </menu>
     </item>
 </menu>

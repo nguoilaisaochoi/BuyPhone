@@ -5,7 +5,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +18,7 @@ import fpoly.edu.duan1.Database.DBHelper;
 import fpoly.edu.duan1.Model.GioHang;
 import fpoly.edu.duan1.Model.SanPham;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class HoaDonDAO {
     private SQLiteDatabase db;
 
@@ -35,6 +38,7 @@ public class HoaDonDAO {
         values.put("soluong", obj.getSoluong());
         values.put("ngay",formatter.format(obj.getNgay()));
         values.put("makh", obj.getMakh());
+        values.put("tinhtrang", obj.getTinhtrang());
         SanPhamDAO sanPhamDAO = new SanPhamDAO(context);
         SanPham sanPham = sanPhamDAO.getID(String.valueOf(obj.getMasp()));
         int gia = sanPham.getGia();
@@ -51,6 +55,7 @@ public class HoaDonDAO {
         values.put("soluong", obj.getSoluong());
         values.put("ngay",formatter.format(obj.getNgay()));
         values.put("makh", obj.getMakh());
+        values.put("tinhtrang", obj.getMakh());
         SanPhamDAO sanPhamDAO = new SanPhamDAO(context);
         SanPham sanPham = sanPhamDAO.getID(String.valueOf(obj.getMasp()));
         int gia = sanPham.getGia();
@@ -58,6 +63,12 @@ public class HoaDonDAO {
         int tongtien = gia * obj.getSoluong();
         values.put("tongtien", tongtien);
         return db.update("Hoadon", values, "magh=?", new String[]{String.valueOf(obj.getMagh())});
+    }
+
+    public int updateTinhTrang(String ngay, String newTinhTrang) {
+        ContentValues values = new ContentValues();
+        values.put("tinhtrang", newTinhTrang);
+        return db.update("Hoadon", values, "ngay=?", new String[]{ngay});
     }
 
     public int delete(String id) {
@@ -79,7 +90,7 @@ public class HoaDonDAO {
             String dateString = c.getString(c.getColumnIndex("ngay"));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime ngay = LocalDateTime.parse(dateString, formatter);
-
+            obj.setTinhtrang(c.getString(c.getColumnIndex("tinhtrang")));
             obj.setNgay(ngay);
 
             list.add(obj);

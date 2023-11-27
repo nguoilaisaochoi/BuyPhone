@@ -1,6 +1,7 @@
 package fpoly.edu.duan1;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,7 +16,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +29,12 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.navigation.NavigationView;
 
 import fpoly.edu.duan1.DAO.GioHang_KHDAO;
@@ -36,10 +47,14 @@ import fpoly.edu.duan1.Fragment.HangSanPhamFragment;
 import fpoly.edu.duan1.Fragment.HoaDonFragment;
 import fpoly.edu.duan1.Fragment.SanPhamAdminFragment;
 import fpoly.edu.duan1.Fragment.SanPhamFragment;
+import fpoly.edu.duan1.Fragment.Thongtinfragment;
+import fpoly.edu.duan1.Model.KhachHang;
+import android.Manifest;
 
 public class MainActivity extends AppCompatActivity {
 
     KhachHangDAO khachHangDAO;
+    KhachHang item;
 
     NavigationView navigationView;
 
@@ -51,11 +66,10 @@ public class MainActivity extends AppCompatActivity {
 
     GioHang_KHDAO gioHang_khdao;
     private static final String PREF_ROLE_KEY = "user_role";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Di chuyển đoạn mã đăng ký BroadcastReceiver và cập nhật badge vào đây
+        // cập nhật giỏ hàng vào đây
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -70,32 +84,67 @@ public class MainActivity extends AppCompatActivity {
         drlayout = findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nvView);
         tb = findViewById(R.id.toolbar);
-        icongiohang=findViewById(R.id.icongiohang);
-        gioHang_khdao=new GioHang_KHDAO(getApplicationContext());
+        icongiohang = findViewById(R.id.icongiohang);
+        gioHang_khdao = new GioHang_KHDAO(getApplicationContext());
         hideSystemUI();
         //name user
         View nav_header = navigationView.getHeaderView(0);
         TextView txtten = nav_header.findViewById(R.id.txtten);
+        ImageView imageavt = nav_header.findViewById(R.id.imgavtmain);
+        //lấy makh
         nav_name = getSharedPreferences("name_Nav", MODE_PRIVATE);
-        String hoten = nav_name.getString("makh", "");
+        String id = nav_name.getString("makh", "");
         khachHangDAO = new KhachHangDAO(this);
-        txtten.setText(khachHangDAO.getHotenByMatt(hoten));
+        //set tên ,ảnh
+        item = khachHangDAO.getID(id);
+        txtten.setText(item.getHoTen());
+        if (item != null) {
+            try {
+                Glide.with(getApplicationContext())
+                        .load(item.getAvt())
+                        .dontAnimate()
+                        .override(290, 290)
+                        .skipMemoryCache(false)
+                        .error(R.drawable.man) // Add an error drawable
+                        .diskCacheStrategy(DiskCacheStrategy.ALL) // Sử dụng cache đĩa
+                        .into(imageavt);
+            } catch (Exception e) {
+            }
+        }
+// cập nhật sau khi edit từ thongtinfrag
+        LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                // Update the user name
+                txtten.setText(intent.getStringExtra("new_name"));
+                // Update the profile picture
+                Glide.with(getApplicationContext())
+                        .load(intent.getStringExtra("new_avatar"))
+                        .dontAnimate()
+                        .override(290, 290)
+                        .skipMemoryCache(false)
+                        .error(R.drawable.man)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(imageavt);
+            }
+        }, new IntentFilter("update_user_info"));
+
         //giohang rieng user
         DBHelper dbHelper = new DBHelper(getApplicationContext());
-        String tableName = "Giohang_" + hoten;
+        String tableName = "Giohang_" + id;
         boolean tableExists = dbHelper.isTableExists(tableName);
         if (tableExists) {
             // Bảng đã được tạo
         } else {
             // Bảng chưa được tạo
-            dbHelper.createNewTableFromThanhVien(hoten); // Tạo bảng
+            dbHelper.createNewTableFromThanhVien(id); // Tạo bảng
         }
         TextView badgeTextView = findViewById(R.id.badge);
-// Set the badge count (replace 'count' with your actual count)
+// Set số lượng sản phẩm
         int count = gioHang_khdao.getSoLuongMasp();
         badgeTextView.setText(String.valueOf(count));
 
-// Show or hide the badge based on the count
+// Hiển thị hoặc ẩn huy hiệu dựa trên số lượng
         badgeTextView.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
         setSupportActionBar(tb);
         ActionBar ab = getSupportActionBar();
@@ -129,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
             setTitle("Quản lí Sản phẩm");
             menu1.findItem(R.id.giohang).setVisible(false);
             menu1.findItem(R.id.sanpham).setVisible(false);
-            menu1.findItem(R.id.hoadon).setVisible(false);
         }
         icongiohang.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,22 +203,25 @@ public class MainActivity extends AppCompatActivity {
                     fragment = new SanPhamFragment();
                 } else if (id == R.id.giohang) {
                     setTitle("Giỏ hàng");
-                    fragment=new GioHangFragment();
+                    fragment = new GioHangFragment();
                 } else if (id == R.id.sanphamadmin) {
                     setTitle("Quản lí Sản phẩm");
                     fragment = new SanPhamAdminFragment();
                 } else if (id == R.id.qlhang) {
                     setTitle("Quản lí hãng");
-                    fragment =new HangSanPhamFragment();
+                    fragment = new HangSanPhamFragment();
                 } else if (id == R.id.hoadon) {
-                    fragment=  new HoaDonFragment();
-                    setTitle("Hoá đơn");
+                    fragment = new HoaDonFragment();
+                    setTitle("Đơn hàng");
                 } else if (id == R.id.dt) {
                     setTitle("Doanh thu");
-                    fragment =new DoanhThuFragment();
+                    fragment = new DoanhThuFragment();
+                } else if (id == R.id.thongtin) {
+                    setTitle("Thông tin tài khoản");
+                    fragment = new Thongtinfragment();
                 } else if (id == R.id.dmk) {
                     setTitle("Đổi mật khẩu");
-                    fragment= new DoimkFM();
+                    fragment = new DoimkFM();
                 } else if (id == R.id.dx) {
                     startActivity(new Intent(getApplicationContext(), Login.class));
                     finish();
@@ -202,4 +253,5 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
     }
+
 }

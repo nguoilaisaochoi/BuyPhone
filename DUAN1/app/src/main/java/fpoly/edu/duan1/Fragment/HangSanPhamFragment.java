@@ -4,10 +4,12 @@ import static android.app.Activity.RESULT_OK;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -28,6 +30,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -40,6 +44,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import fpoly.edu.duan1.Adapter.HangSanPhamAdapter;
@@ -77,6 +82,8 @@ public class HangSanPhamFragment extends Fragment {
     Uri selectedImageUri;
 
     SearchView searchView;
+
+    private ActivityResultLauncher<Intent> galleryLauncher;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -111,6 +118,17 @@ public class HangSanPhamFragment extends Fragment {
                 return false;
             }
         });
+        galleryLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Uri imageUri = data.getData();
+                            handleImageResult(imageUri);
+                        }
+                    }
+                });
         return v;
     }
 
@@ -180,7 +198,7 @@ public class HangSanPhamFragment extends Fragment {
                     Glide.with(context)
                             .load(item.getAnh())
                             .dontAnimate()
-                            .override(290, 290)
+                            .override(240, 240)
                             .skipMemoryCache(false)
                             .error(R.drawable.baseline_image_24) // Add an error drawable
                             .diskCacheStrategy(DiskCacheStrategy.ALL) // Sử dụng cache đĩa
@@ -276,24 +294,28 @@ public class HangSanPhamFragment extends Fragment {
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+
+        // Sử dụng ActivityResultLauncher để khởi động hoạt động thư viện
+        galleryLauncher.launch(intent);
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d("SanPhamAdminFragment", "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
-            Uri imageUri = data.getData();
-            if (imageUri != null) {
-                selectedImageUri = imageUri;
-                // Hiển thị ảnh đã chọn trong ImageView
-                anh.setImageURI(selectedImageUri);
-            } else {
-                // Xử lý lỗi khi không thể lấy được Uri từ Intent
-                Toast.makeText(getActivity(), "Không thể lấy đường dẫn ảnh", Toast.LENGTH_SHORT).show();
+    private void handleImageResult(Uri imageUri) {
+        if (imageUri != null) {
+            selectedImageUri = imageUri;
+            try {
+                // Sử dụng ContentResolver để lấy dữ liệu hình ảnh
+                ContentResolver resolver = getActivity().getContentResolver();
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(resolver, imageUri);
+                Glide.with(requireContext()).clear(anh);
+                // Đặt hình ảnh vào ImageView
+                anh.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(getActivity(), "Không thể lấy dữ liệu ảnh", Toast.LENGTH_SHORT).show();
             }
+        } else {
+            Toast.makeText(getActivity(), "Không thể lấy đường dẫn ảnh", Toast.LENGTH_SHORT).show();
         }
     }
     private String getRealPathFromURI(Uri contentUri) {

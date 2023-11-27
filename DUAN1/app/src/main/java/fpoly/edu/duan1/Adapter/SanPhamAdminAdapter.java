@@ -1,7 +1,11 @@
 package fpoly.edu.duan1.Adapter;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +16,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,7 +58,6 @@ public class SanPhamAdminAdapter extends ArrayAdapter<SanPham>{
         this.context = context;
         this.lists = lists;
         this.fragment = fragment;
-
     }
 
     @NonNull
@@ -72,7 +76,7 @@ public class SanPhamAdminAdapter extends ArrayAdapter<SanPham>{
             Glide.with(context)
                     .load(item.getAnh())
                     .dontAnimate()
-                    .override(290,290)
+                    .override(240,240)
                     .skipMemoryCache(false) // Cho phép sử dụng cache trong bộ nhớ
                     .diskCacheStrategy(DiskCacheStrategy.ALL) // Sử dụng cache đĩa
                     .error(R.drawable.noimg) // Add an error drawable
@@ -124,4 +128,6 @@ public class SanPhamAdminAdapter extends ArrayAdapter<SanPham>{
         });
         return v;
     }
+
+
 }

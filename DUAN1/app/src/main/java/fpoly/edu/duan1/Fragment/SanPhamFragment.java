@@ -60,6 +60,7 @@ public class SanPhamFragment extends Fragment {
         dao = new SanPhamDAO(getActivity());
         daogh_kh = new GioHang_KHDAO(getActivity());
         searchView = v.findViewById(R.id.search_sp);
+        searchView.setFocusable(false);
         capnhatlv();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

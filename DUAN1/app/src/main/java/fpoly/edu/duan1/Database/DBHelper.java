@@ -17,6 +17,8 @@ public class DBHelper extends SQLiteOpenHelper {
             "makh    TEXT PRIMARY KEY," +
             "hoten   TEXT NOT NULL," +
             "sdt     INTEGER ," +
+            "diachi     TEXT ," +
+            "avt     TEXT ," +
             "matKhau TEXT NOT NULL" +
             ")";
 
@@ -46,6 +48,7 @@ public class DBHelper extends SQLiteOpenHelper {
             "mahang   INTEGER REFERENCES Hangsp (mahang)," +
             "tongtien INTEGER NOT NULL," +
             "ngay     DATE," +
+            "tinhtrang   TEXT," +
             "soluong INTEGER NOT NULL" +
             ")";
 

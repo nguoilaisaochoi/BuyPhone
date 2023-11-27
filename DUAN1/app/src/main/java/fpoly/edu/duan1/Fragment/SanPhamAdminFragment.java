@@ -2,16 +2,23 @@ package fpoly.edu.duan1.Fragment;
 
 import static android.app.Activity.RESULT_OK;
 
+import static androidx.core.content.PermissionChecker.checkSelfPermission;
+
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -31,6 +38,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -43,6 +52,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import fpoly.edu.duan1.Adapter.SanPhamAdminAdapter;
@@ -81,11 +91,8 @@ public class SanPhamAdminFragment extends Fragment {
     int mahang, positionhangsp;
     SanPham item;
 
-    private static final int PICK_IMAGE_REQUEST = 1;
-    private String imagePath;
-
     Uri selectedImageUri;
-
+    private ActivityResultLauncher<Intent> galleryLauncher;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -94,6 +101,7 @@ public class SanPhamAdminFragment extends Fragment {
         dao = new SanPhamDAO(getActivity());
         fab = v.findViewById(R.id.fab);
         searchView = v.findViewById(R.id.searchViewad);
+        searchView.setFocusable(false);
         capnhatlv();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,6 +137,17 @@ public class SanPhamAdminFragment extends Fragment {
                 return false;
             }
         });
+        galleryLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Uri imageUri = data.getData();
+                            handleImageResult(imageUri);
+                        }
+                    }
+                });
         return v;
     }
 
@@ -137,11 +156,16 @@ public class SanPhamAdminFragment extends Fragment {
         adapter = new SanPhamAdminAdapter(getActivity(), this, list);
         lvsp.setAdapter(adapter);
     }
+
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+
+        // Sử dụng ActivityResultLauncher để khởi động hoạt động thư viện
+        galleryLauncher.launch(intent);
+        Glide.with(requireContext()).clear(anhsp);
     }
+
     protected void opendialog(final Context context, final int type) {
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_sua_sanpham);
@@ -193,20 +217,19 @@ public class SanPhamAdminFragment extends Fragment {
                     positionhangsp = i;
                 }
             sphang.setSelection(positionhangsp);
-            //anhsp.setImageURI(item.getAnh());
             if (item != null) {
                 try {
                     Glide.with(context)
                             .load(item.getAnh())
                             .dontAnimate()
-                            .override(290, 290)
+                            .override(240, 240)
                             .skipMemoryCache(false)
                             .error(R.drawable.baseline_image_24) // Add an error drawable
                             .diskCacheStrategy(DiskCacheStrategy.ALL) // Sử dụng cache đĩa
                             .listener(new RequestListener<Drawable>() {
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    selectedImageUri=null;
+                                    selectedImageUri = null;
                                     return false;
                                 }
 
@@ -232,71 +255,74 @@ public class SanPhamAdminFragment extends Fragment {
         luusp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                item = new SanPham();
-                item.setMahang(mahang);
-                item.setTensp(tensp.getText().toString());
-                item.setManhinh(Float.parseFloat(manhinh.getText().toString()));
-                item.setRam(Integer.parseInt(ram.getText().toString()));
-                item.setDungluong(Integer.parseInt(dungluong.getText().toString()));
-                item.setGia(Integer.parseInt(giasp.getText().toString()));
-                item.setAnh(selectedImageUri);
-                // Lưu đường dẫn ảnh vào cơ sở dữ liệu
-                if (type == 0) {
-                    if (dao.insert(item) > 0) {
-                        Context context = getContext();
-                        LayoutInflater inflater = getLayoutInflater();
-                        View customToastView = inflater.inflate(R.layout.customtoast, null);
-                        TextView textView = customToastView.findViewById(R.id.custom_toast_message);
-                        textView.setText("Đã thêm");
+                if (valiable() > 0) {
+                    item = new SanPham();
+                    item.setMahang(mahang);
+                    item.setTensp(tensp.getText().toString());
+                    item.setManhinh(Float.parseFloat(manhinh.getText().toString()));
+                    item.setRam(Integer.parseInt(ram.getText().toString()));
+                    item.setDungluong(Integer.parseInt(dungluong.getText().toString()));
+                    item.setGia(Integer.parseInt(giasp.getText().toString()));
+                    item.setAnh(selectedImageUri);
+                    // Lưu đường dẫn ảnh vào cơ sở dữ liệu
+                    if (type == 0) {
+                        if (dao.insert(item) > 0) {
+                            Context context = getContext();
+                            LayoutInflater inflater = getLayoutInflater();
+                            View customToastView = inflater.inflate(R.layout.customtoast, null);
+                            TextView textView = customToastView.findViewById(R.id.custom_toast_message);
+                            textView.setText("Đã thêm");
 
-                        Toast customToast = new Toast(context);
-                        customToast.setDuration(Toast.LENGTH_SHORT);
-                        customToast.setView(customToastView);
-                        customToast.show();
-                        //Toast.makeText(context, "Đã thêm", Toast.LENGTH_SHORT).show();
+                            Toast customToast = new Toast(context);
+                            customToast.setDuration(Toast.LENGTH_SHORT);
+                            customToast.setView(customToastView);
+                            customToast.show();
+                            //Toast.makeText(context, "Đã thêm", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Context context = getContext();
+                            LayoutInflater inflater = getLayoutInflater();
+                            View customToastView = inflater.inflate(R.layout.customtoast, null);
+                            TextView textView = customToastView.findViewById(R.id.custom_toast_message);
+                            textView.setText("Không thêm được");
+
+                            Toast customToast = new Toast(context);
+                            customToast.setDuration(Toast.LENGTH_SHORT);
+                            customToast.setView(customToastView);
+                            customToast.show();
+                            //Toast.makeText(context, "Không thêm được", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Context context = getContext();
-                        LayoutInflater inflater = getLayoutInflater();
-                        View customToastView = inflater.inflate(R.layout.customtoast, null);
-                        TextView textView = customToastView.findViewById(R.id.custom_toast_message);
-                        textView.setText("Không thêm được");
+                        item.setMasp(Integer.parseInt(masp.getText().toString()));
+                        if (dao.update(item) > 0) {
+                            Context context = getContext();
+                            LayoutInflater inflater = getLayoutInflater();
+                            View customToastView = inflater.inflate(R.layout.customtoast, null);
+                            TextView textView = customToastView.findViewById(R.id.custom_toast_message);
+                            textView.setText("Đã sửa");
 
-                        Toast customToast = new Toast(context);
-                        customToast.setDuration(Toast.LENGTH_SHORT);
-                        customToast.setView(customToastView);
-                        customToast.show();
-                        //Toast.makeText(context, "Không thêm được", Toast.LENGTH_SHORT).show();
+                            Toast customToast = new Toast(context);
+                            customToast.setDuration(Toast.LENGTH_SHORT);
+                            customToast.setView(customToastView);
+                            customToast.show();
+                            //Toast.makeText(context, "Đã sửa", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Context context = getContext();
+                            LayoutInflater inflater = getLayoutInflater();
+                            View customToastView = inflater.inflate(R.layout.customtoast, null);
+                            TextView textView = customToastView.findViewById(R.id.custom_toast_message);
+                            textView.setText("Không sửa được");
+
+                            Toast customToast = new Toast(context);
+                            customToast.setDuration(Toast.LENGTH_SHORT);
+                            customToast.setView(customToastView);
+                            customToast.show();
+                            //Toast.makeText(context, "Không sửa được", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                } else {
-                    item.setMasp(Integer.parseInt(masp.getText().toString()));
-                    if (dao.update(item) > 0) {
-                        Context context = getContext();
-                        LayoutInflater inflater = getLayoutInflater();
-                        View customToastView = inflater.inflate(R.layout.customtoast, null);
-                        TextView textView = customToastView.findViewById(R.id.custom_toast_message);
-                        textView.setText("Đã sửa");
-
-                        Toast customToast = new Toast(context);
-                        customToast.setDuration(Toast.LENGTH_SHORT);
-                        customToast.setView(customToastView);
-                        customToast.show();
-                        //Toast.makeText(context, "Đã sửa", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Context context = getContext();
-                        LayoutInflater inflater = getLayoutInflater();
-                        View customToastView = inflater.inflate(R.layout.customtoast, null);
-                        TextView textView = customToastView.findViewById(R.id.custom_toast_message);
-                        textView.setText("Không sửa được");
-
-                        Toast customToast = new Toast(context);
-                        customToast.setDuration(Toast.LENGTH_SHORT);
-                        customToast.setView(customToastView);
-                        customToast.show();
-                        //Toast.makeText(context, "Không sửa được", Toast.LENGTH_SHORT).show();
-                    }
+                    capnhatlv();
+                    dialog.dismiss();
                 }
-                capnhatlv();
-                dialog.dismiss();
+
             }
         });
         dialog.show();
@@ -347,22 +373,40 @@ public class SanPhamAdminFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d("SanPhamAdminFragment", "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
-            Uri imageUri = data.getData();
-            if (imageUri != null) {
-                selectedImageUri = imageUri;
-                // Hiển thị ảnh đã chọn trong ImageView
-                anhsp.setImageURI(selectedImageUri);
-            } else {
-                // Xử lý lỗi khi không thể lấy được Uri từ Intent
-                Toast.makeText(getActivity(), "Không thể lấy đường dẫn ảnh", Toast.LENGTH_SHORT).show();
+
+    public int valiable() {
+        int check = 1;
+        if (tensp.getText().length() == 0 || manhinh.getText().length() == 0 || ram.getText().length() == 0 || dungluong.getText().length() == 0 || giasp.getText().length() == 0) {
+            Context context = getContext();
+            LayoutInflater inflater = getLayoutInflater();
+            View customToastView = inflater.inflate(R.layout.customtoast, null);
+            TextView textView = customToastView.findViewById(R.id.custom_toast_message);
+            textView.setText("Không bỏ trống");
+
+            Toast customToast = new Toast(context);
+            customToast.setDuration(Toast.LENGTH_SHORT);
+            customToast.setView(customToastView);
+            customToast.show();
+            check = -1;
+        }
+        return check;
+    }
+    private void handleImageResult(Uri imageUri) {
+        if (imageUri != null) {
+            selectedImageUri = imageUri;
+            try {
+                // Sử dụng ContentResolver để lấy dữ liệu hình ảnh
+                ContentResolver resolver = getActivity().getContentResolver();
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(resolver, imageUri);
+
+                // Đặt hình ảnh vào ImageView
+                anhsp.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(getActivity(), "Không thể lấy dữ liệu ảnh", Toast.LENGTH_SHORT).show();
             }
+        } else {
+            Toast.makeText(getActivity(), "Không thể lấy đường dẫn ảnh", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 }

@@ -8,21 +8,21 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp"
-        android:layout_margin="10dp">
+        app:cardCornerRadius="10sp"
+        android:layout_margin="10sp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_margin="5dp"
-            android:padding="5dp">
+            android:layout_margin="5sp"
+            android:padding="5sp">
 
             <ImageView
                 android:id="@+id/gh_anh"
                 android:layout_width="wrap_content"
-                android:layout_height="120dp"
-                android:layout_marginEnd="5dp"
+                android:layout_height="120sp"
+                android:layout_marginEnd="5sp"
                 android:layout_weight="0"
                 android:src="@drawable/image5" />
 
@@ -35,11 +35,11 @@
                     android:id="@+id/gh_tensp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
+                    android:layout_marginBottom="2sp"
                     android:layout_weight="4"
                     android:fontFamily="serif"
                     android:text="TextView"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -53,12 +53,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="5sp"
                         android:background="@drawable/text_bgn1"
                         android:fontFamily="serif"
                         android:gravity="center"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="5dp"
+                        android:paddingStart="5sp"
+                        android:paddingEnd="5sp"
                         android:text="6.8 inches" />
 
                     <TextView
@@ -66,12 +66,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="5sp"
                         android:background="@drawable/text_bgn1"
                         android:fontFamily="serif"
                         android:gravity="center"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="5dp"
+                        android:paddingStart="5sp"
+                        android:paddingEnd="5sp"
                         android:text="8GB" />
 
                     <TextView
@@ -79,12 +79,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="5sp"
                         android:background="@drawable/text_bgn1"
                         android:fontFamily="serif"
                         android:gravity="center"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="5dp"
+                        android:paddingStart="5sp"
+                        android:paddingEnd="5sp"
                         android:text="256GB" />
 
                     <TextView
@@ -92,19 +92,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="5sp"
                         android:background="@drawable/text_bgn1"
                         android:fontFamily="serif"
                         android:gravity="center"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="5dp"
+                        android:paddingStart="5sp"
+                        android:paddingEnd="5sp"
                         android:text="Iphone" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="3sp"
                     android:layout_weight="3"
                     android:orientation="horizontal">
 
@@ -113,7 +113,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginStart="5dp"
+                        android:layout_marginStart="5sp"
                         android:layout_weight="1"
                         android:fontFamily="serif"
                         android:text="28,490,000đ"
@@ -122,55 +122,55 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_height="30sp"
+                    android:layout_marginTop="5sp"
                     android:layout_weight="2"
                     android:orientation="horizontal">
 
 
                     <TextView
                         android:id="@+id/sl_giam"
-                        android:layout_width="30dp"
+                        android:layout_width="30sp"
                         android:layout_height="match_parent"
                         android:background="@drawable/thanh_toan_rcv_them"
                         android:clickable="true"
                         android:gravity="center"
                         android:text="-"
-                        android:textSize="25dp"
+                        android:textSize="25sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/gh_soluong"
-                        android:layout_width="60dp"
+                        android:layout_width="60sp"
                         android:layout_height="match_parent"
                         android:background="@drawable/thanh_toan_rcv_them"
                         android:gravity="center"
                         android:inputType="number"
                         android:text="1"
-                        android:textSize="25dp" />
+                        android:textSize="25sp" />
 
                     <TextView
                         android:id="@+id/sl_tang"
-                        android:layout_width="30dp"
+                        android:layout_width="30sp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:background="@drawable/thanh_toan_rcv_them"
                         android:clickable="true"
                         android:gravity="center_horizontal"
                         android:text="+"
-                        android:textSize="25dp"
+                        android:textSize="25sp"
                         android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/btnhuygh"
                         android:layout_width="wrap_content"
-                        android:layout_height="35dp"
+                        android:layout_height="35sp"
                         android:layout_gravity="right"
-                        android:layout_marginLeft="50dp"
+                        android:layout_marginLeft="50sp"
                         android:backgroundTint="#4BB9A0"
                         android:text="Huỷ"
-                        android:textSize="11dp"
-                        app:cornerRadius="30dp" />
+                        android:textSize="11sp"
+                        app:cornerRadius="30sp" />
                 </LinearLayout>
 
             </LinearLayout>

@@ -9,14 +9,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +31,7 @@ import fpoly.edu.duan1.DAO.HoaDonDAO;
 import fpoly.edu.duan1.DAO.GioHang_KHDAO;
 import fpoly.edu.duan1.DAO.KhachHangDAO;
 import fpoly.edu.duan1.Model.GioHang;
+import fpoly.edu.duan1.Model.KhachHang;
 import fpoly.edu.duan1.R;
 
 public class GioHangFragment extends Fragment {
@@ -47,12 +44,14 @@ public class GioHangFragment extends Fragment {
 
     GioHangAdapter adapter;
 
-    TextView tongtien;
+    TextView tongtien,diachi;
 
     Button mua;
     SharedPreferences nav_name;
 
+    KhachHangDAO khachHangDAO;
 
+    KhachHang item;
 
     @SuppressLint("MissingInflatedId")
     @Nullable
@@ -64,24 +63,23 @@ public class GioHangFragment extends Fragment {
         khdao = new KhachHangDAO(getActivity());
         tongtien = v.findViewById(R.id.tvtongtien);
         mua = v.findViewById(R.id.btnmua);
+        diachi=v.findViewById(R.id.tvdiachi);
         capnhatlv();
-
+        nav_name = getActivity().getSharedPreferences("name_Nav", MODE_PRIVATE);
+        String id = nav_name.getString("makh", "");
+        khachHangDAO=new KhachHangDAO(getContext());
+        item=khachHangDAO.getID(id);
+        diachi.setText("Địa chỉ: "+item.getDiachi());
         mua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                nav_name = getActivity().getSharedPreferences("name_Nav", MODE_PRIVATE);
-                String tenDangNhap = nav_name.getString("makh", "");
-
-
+            if (valiable()>0){
                 // Lấy tất cả các mục từ GioHang_KHDAO
                 List<GioHang> gioHangList = dao.getAll();
-
                 // Kiểm tra xem danh sách có rỗng không
                 if (!gioHangList.isEmpty()) {
                     // Khởi tạo GioHangDAO
                     HoaDonDAO hoaDonDAO = new HoaDonDAO(getActivity());
-
                     // Lặp qua từng mục trong danh sách và chèn nó vào GioHangDAO
                     for (GioHang gioHang : gioHangList) {
                         // Lấy ngày hiện tại
@@ -90,7 +88,8 @@ public class GioHangFragment extends Fragment {
                         // Set ngày hiện tại cho gioHang
                         gioHang.setNgay(getCurrentDateTime());
 
-                        gioHang.setMakh(tenDangNhap);
+                        gioHang.setMakh(id);
+                        gioHang.setTinhtrang("Chờ xử lí");
                         // Chèn mục vào GioHangDAO
                         long result = hoaDonDAO.insert(gioHang, getActivity());
 
@@ -139,11 +138,32 @@ public class GioHangFragment extends Fragment {
                     //Toast.makeText(getActivity(), "Không có sản phẩm", Toast.LENGTH_SHORT).show();
                 }
             }
+            }
         });
 
         return v;
     }
+    public int valiable() {
+        nav_name = getActivity().getSharedPreferences("name_Nav", MODE_PRIVATE);
+        String id = nav_name.getString("makh", "");
+        khachHangDAO=new KhachHangDAO(getContext());
+        item=khachHangDAO.getID(id);
+        int check = 1;
+        if (item.getSdt()==0||item.getDiachi().isEmpty()){
+            Context context = getContext();
+            LayoutInflater inflater = getLayoutInflater();
+            View customToastView = inflater.inflate(R.layout.customtoast, null);
+            TextView textView = customToastView.findViewById(R.id.custom_toast_message);
+            textView.setText("Hãy điền địa chỉ và số điện thoại");
 
+            Toast customToast = new Toast(context);
+            customToast.setDuration(Toast.LENGTH_SHORT);
+            customToast.setView(customToastView);
+            customToast.show();
+            check =-1;
+        }
+        return check;
+    }
     public void capnhatlv() {
         list = (ArrayList<GioHang>) dao.getAll();
         adapter = new GioHangAdapter(getActivity(), this, list);

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,8 @@ public class KhachHangDAO {
         values.put("hoten",obj.getHoTen());
         values.put("matKhau",obj.getMatKhau());
         values.put("sdt",obj.getSdt());
+        values.put("diachi",obj.getDiachi());
+        values.put("avt", String.valueOf(obj.getAvt()));
         return db.insert("Khachhang",null,values);
     };
 
@@ -39,6 +43,15 @@ public class KhachHangDAO {
         values.put("matKhau",obj.getMatKhau());
         return db.update("Khachhang",values,"makh=?",new String[]{obj.getMakh()});
     }
+    public int updateInfo(KhachHang obj){
+        ContentValues values=new ContentValues();
+        values.put("hoten", obj.getHoTen());
+        values.put("sdt", obj.getSdt());
+        values.put("diachi", obj.getDiachi());
+        values.put("avt", String.valueOf(obj.getAvt()));
+        return db.update("Khachhang", values, "makh=?", new String[]{obj.getMakh()});
+    }
+
     public int delete(String id){
         return db.delete("Khachhang","makh",new String[]{id});
     }
@@ -51,6 +64,37 @@ public class KhachHangDAO {
             obj.setMakh(c.getString(c.getColumnIndex("makh")));
             obj.setHoTen(c.getString(c.getColumnIndex("hoten")));
             obj.setMatKhau(c.getString(c.getColumnIndex("matKhau")));
+            String sdtString = c.getString(c.getColumnIndex("sdt"));
+            obj.setDiachi(c.getString(c.getColumnIndex("diachi")));
+            if (sdtString != null && !sdtString.isEmpty()) {
+                obj.setSdt(Integer.valueOf(sdtString));
+            } else {
+                // Xử lý khi "sdt" rỗng hoặc null
+                obj.setSdt(0); // Hoặc giá trị mặc định khác bạn mong muốn
+            }
+            String daichiString = c.getString(c.getColumnIndex("diachi"));
+            if (daichiString != null && !daichiString.isEmpty()) {
+                obj.setDiachi(daichiString);
+            } else {
+                // Xử lý khi "daichi" rỗng hoặc null
+                obj.setDiachi(""); // Hoặc giá trị mặc định khác bạn mong muốn
+            }
+            String anhString = c.getString(c.getColumnIndex("avt"));
+            if (anhString != null) {
+                try {
+                    obj.setAvt(Uri.parse(anhString));
+                } catch (IllegalArgumentException e) {
+                    // Handle the exception, e.g., log a message or provide a default URI
+                    Log.e("SanPhamDAO", "Error parsing URI for 'anh'", e);
+                    // You might want to set a default URI or handle the error in some way
+                    // obj.setAnh(defaultUri);
+                }
+            } else {
+                // Handle the case where "anh" column is null
+                Log.e("SanPhamDAO", "'anh' column is null");
+                // You might want to set a default URI or handle the error in some way
+                // obj.setAnh(defaultUri);
+            }
             list.add(obj);
         }
         return list;

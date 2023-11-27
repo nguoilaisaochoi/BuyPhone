@@ -1,11 +1,16 @@
 package fpoly.edu.duan1.Model;
 
+import android.net.Uri;
+
 public class KhachHang {
     private String makh;
     private String hoTen;
     private Integer sdt;
     private String matKhau;
 
+    private String diachi;
+
+    private Uri avt;
 
     public KhachHang() {
     }
@@ -15,6 +20,22 @@ public class KhachHang {
         this.hoTen = hoTen;
         this.sdt = sdt;
         this.matKhau = matKhau;
+    }
+
+    public Uri getAvt() {
+        return avt;
+    }
+
+    public void setAvt(Uri avt) {
+        this.avt = avt;
+    }
+
+    public String getDiachi() {
+        return diachi;
+    }
+
+    public void setDiachi(String diachi) {
+        this.diachi = diachi;
     }
 
     public String getMakh() {

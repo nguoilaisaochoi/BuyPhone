@@ -4,17 +4,21 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class GioHang {
-    private  int magh;
+    private int magh;
 
-    private  int masp;
+    private int masp;
     private int tongtien;
 
-    private  int soluong;
-    private  int mahang;
+    private int soluong;
+    private int mahang;
 
     private LocalDateTime ngay;
 
     private String makh;
+
+    private String tinhtrang;
+
+    private String diachi;
 
     public GioHang() {
     }
@@ -35,6 +39,22 @@ public class GioHang {
         this.tongtien = tongtien;
         this.soluong = soluong;
         this.mahang = mahang;
+    }
+
+    public String getDiachi() {
+        return diachi;
+    }
+
+    public void setDiachi(String diachi) {
+        this.diachi = diachi;
+    }
+
+    public String getTinhtrang() {
+        return tinhtrang;
+    }
+
+    public void setTinhtrang(String tinhtrang) {
+        this.tinhtrang = tinhtrang;
     }
 
     public String getMakh() {
@@ -60,7 +80,6 @@ public class GioHang {
     public void setMagh(int magh) {
         this.magh = magh;
     }
-
 
 
     public int getMasp() {

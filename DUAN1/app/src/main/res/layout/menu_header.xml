@@ -7,7 +7,7 @@
     android:background="#4BB9A0"
     >
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imgavtmain"
         android:layout_width="84dp"
         android:layout_height="84dp"
         app:srcCompat="@drawable/man"
